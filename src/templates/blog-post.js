@@ -9,6 +9,12 @@ class BlogPostTemplate extends React.Component {
     const siteTitle = get(this.props, 'data.site.siteMetadata.title')
     const { previous, next } = this.props.pathContext
 
+    const authors = post.frontmatter.authors.map((author) => {
+      return (
+        <p key={author.id}>{author.name}</p>
+      )
+    });
+
     return (
       <div>
         <Helmet title={`${post.frontmatter.title} | ${siteTitle}`} />
@@ -17,6 +23,10 @@ class BlogPostTemplate extends React.Component {
           {post.frontmatter.date}
         </p>
         <div dangerouslySetInnerHTML={{ __html: post.html }} />
+        <hr/>
+
+        {authors}
+
         <hr/>
 
         <ul>
@@ -57,6 +67,10 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        authors {
+          id
+          name
+        }
       }
     }
   }
